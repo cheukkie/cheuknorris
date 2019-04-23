@@ -1,7 +1,9 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         app: ['@babel/polyfill','./src/js/app.js']
     },
@@ -9,6 +11,10 @@ module.exports = {
         path: path.resolve(__dirname, 'build'),
         filename: 'app.bundle.js'
     },
+    plugins:[
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({ filename: "[name].css" }),
+    ],
     module: {
         rules: [
             {
@@ -22,19 +28,11 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                        "style-loader",
+                        MiniCssExtractPlugin.loader, // extract css into files
                         "css-loader", // translates CSS into CommonJS
                         "sass-loader" // compiles Sass to CSS, using Node Sass by default
                     ]
             },
-            {
-                test: /\.css$/,
-                use: [
-                        "style-loader",
-                        "css-loader", // translates CSS into CommonJS
-                        "sass-loader" // compiles Sass to CSS, using Node Sass by default
-                    ]
-                }
 
         ]
     }
