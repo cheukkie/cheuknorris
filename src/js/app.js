@@ -1,11 +1,15 @@
 import '../scss/main.scss';
 
-var test = 123;
+const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    }
+});
 
-console.log(test);
 
 async function getPosts() {
-    const response = await fetch('http://api.icndb.com/jokes/random/10');
+const response = await fetch('http://api.icndb.com/jokes/random/10');
 
     const data = await response.json();
     return data.value;
