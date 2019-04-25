@@ -1,0 +1,24 @@
+#chuckNorris{
+    .jokeContainer{
+        width: 50%;
+        max-width: 500px;
+        float: left;
+    }
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    li{
+        display: flex;
+        justify-content: flex-start;
+        
+        border: solid 1px red;
+        margin: 10px 0;
+        div{
+            margin: 10px;
+        }
+    }
+}

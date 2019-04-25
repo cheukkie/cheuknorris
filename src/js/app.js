@@ -27,7 +27,11 @@ const chuckNorris = new Vue({
     el: '#chuckNorris',
     data: {
         jokes: [],
-        favorites: []
+        favorites: [],
+        timer: '',
+        timerActivated : false,
+        timerIndication : 0,
+        timerInterval : 5
     },
     methods: {
         getRandomJokes: async function(qty) {
@@ -51,6 +55,31 @@ const chuckNorris = new Vue({
                 });
             });
         },
+        clearFavs: function(){
+            this.favorites = [];
+        },
+        addRandomToFav: function(qty){
+            if( this.favorites.length <= 9 && this.timerActivated ){
+                console.log('get 1 joke');
+                this.getRandomJokes(qty)
+                .then(data => {
+                    data[0]['faved'] = false;
+                    this.favorites.push(data[0]);
+                });   
+            }else{
+                console.log('reset timer');
+                this.timerActivated = false;
+                clearInterval(this.timer);
+            }
+        },
+        startTimer: function(sec){
+            this.addRandomToFav(1);
+            this.timer = setInterval( () => {
+                this.addRandomToFav(1);
+            }, sec * 1000);
+            //strange, its not possible to do this?:
+            // this.timer = setInterval( this.addRandomToFav(), 5000); ??            
+        },
         addFav: function(joke) {
             if( this.favorites.length <= 9 ){
                 joke.faved = true;
@@ -69,6 +98,9 @@ const chuckNorris = new Vue({
             const favPos = this.favorites.indexOf(joke);
             this.favorites.splice(favPos, 1);
         }
+    },
+    beforeDestroy() {
+        clearInterval(this.timer);
     }
 });
 

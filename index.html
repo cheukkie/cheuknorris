@@ -12,31 +12,47 @@
 <body>
     <div id="chuckNorris">
         <h1>Weet jij wie Cheuk Norris?</h1>
-        <button v-on:click="showRandomJokes(10)">Gimme 10 random jokes!</button>
-        <button v-on:click="jokeTimer">Randomly add 1 joke each 5 sec</button>
-
-        <h2>Random jokes</h2>
-        <ul id="random-jokes">
-            <li v-for="joke in jokes">
-                <button v-on:click="addFav(joke)" v-if="!joke.faved">Fav dizzz</button>
-                <div>id {{ joke.id }}</div>
-                <div>{{ joke.joke }}</div>
-                <div v-if="joke.categories.length > 0">
-                    <span v-for="category in joke.categories">{{ category }}</span>
-                </div>
-            </li>
-        </ul>
-        <h2>Favorite jokes</h2>
-        <ul>
-            <li v-for="favorite in favorites">
-                <button v-on:click="removeFav(favorite)">Remove diz</button>
-                <div>id {{ favorite.id }}</div>
-                <div>{{ favorite.joke }}</div>
-                <div v-if="favorite.categories.length > 0">
-                    <span v-for="category in favorite.categories">{{ category }}</span>
-                </div>
-            </li>
-        </ul>
+        <div>
+            <button v-on:click="showRandomJokes(10)">Gimme 10 random jokes!</button>
+            
+            <input v-if="favorites.length < 10" v-on:click="startTimer(5)" type="checkbox" id="checkbox" v-model="timerActivated" v-bind:disabled="favorites.length > 9">
+            <label for="checkbox">
+                <span>Auto add fav: {{ timerActivated }} - </span>
+                <span v-if="favorites.length > 9"> 
+                    Max jokes reached. Delete one or more to automatically add a joke.
+                </span>
+                <span v-else>
+                    Add 1 joke to fav list <span v-if="timerActivated">in {{ timerIndication }} ... </span>
+                </span>
+            </label>
+            <button v-if="favorites.length > 0" v-on:click="clearFavs">Clear my favorite jokes</button>
+        </div>
+        <div class="jokeContainer">
+            <h2>Random jokes</h2>
+            <ul id="random-jokes">
+                <li v-for="joke in jokes">
+                    <button v-on:click="addFav(joke)" v-if="!joke.faved">Fav dizzz</button>
+                    <div>id {{ joke.id }}</div>
+                    <div>{{ joke.joke }}</div>
+                    <div v-if="joke.categories.length > 0">
+                        <span v-for="category in joke.categories">{{ category }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="jokeContainer" v-if="favorites.length > 0">
+            <h2>Favorite jokes</h2>
+            <ul>
+                <li v-for="favorite in favorites">
+                    <button v-on:click="removeFav(favorite)">Remove diz</button>
+                    <div>id {{ favorite.id }}</div>
+                    <div>{{ favorite.joke }}</div>
+                    <div v-if="favorite.categories.length > 0">
+                        <span v-for="category in favorite.categories">{{ category }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
