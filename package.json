@@ -18,7 +18,9 @@
     "url": "https://github.com/cheukkie/cheuknorris/issues"
   },
   "homepage": "https://github.com/cheukkie/cheuknorris#readme",
-  "dependencies": {},
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/polyfill": "^7.4.3",
