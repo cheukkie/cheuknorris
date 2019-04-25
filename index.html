@@ -10,8 +10,10 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="chuckNorris">
         <h1>Weet jij wie Cheuk Norris?</h1>
+        <button v-on:click="showRandomJokes(10)">Gimme 10 random jokes!</button>
+        <button v-on:click="jokeTimer">Randomly add 1 joke each 5 sec</button>
 
         <h2>Random jokes</h2>
         <ul id="random-jokes">
