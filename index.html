@@ -27,13 +27,13 @@
             </label>
             <button v-if="favorites.length > 0" v-on:click="clearFavs">Clear my favorite jokes</button>
         </div>
-        <div class="jokeContainer">
+        <div class="jokeContainer" v-if="jokes.length > 0">
             <h2>Random jokes</h2>
             <ul id="random-jokes">
                 <li v-for="joke in jokes">
                     <button v-on:click="addFav(joke)" v-if="!joke.faved">Fav dizzz</button>
                     <div>id {{ joke.id }}</div>
-                    <div>{{ joke.joke }}</div>
+                    <div v-html="joke.joke"></div>
                     <div v-if="joke.categories.length > 0">
                         <span v-for="category in joke.categories">{{ category }}</span>
                     </div>
@@ -46,7 +46,7 @@
                 <li v-for="favorite in favorites">
                     <button v-on:click="removeFav(favorite)">Remove diz</button>
                     <div>id {{ favorite.id }}</div>
-                    <div>{{ favorite.joke }}</div>
+                    <div v-html="favorite.joke"></div>
                     <div v-if="favorite.categories.length > 0">
                         <span v-for="category in favorite.categories">{{ category }}</span>
                     </div>
