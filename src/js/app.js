@@ -6,11 +6,6 @@ import '../scss/main.scss';
 TO DO:
 
 - PROMPTING ON REMOVING FAV JOKE
-
-- ONLY UNIQUE JOKES IN FAVORITE LIST
-    > CHECK IF JOKE EXISTS WHILE FETCHING RANDOM JOKE
-    > GET 10 UNIQUE JOKES BY CHECKING WITH FAV LIST
-
 - COUNTDOWN OF 5 SEONDS AFTER ACTIVATING RANDOM BTN
 
 
@@ -51,16 +46,28 @@ const chuckNorris = new Vue({
             .then(data => {
                 this.jokes = [];
                 data.forEach(joke => {
+                    //check joke exists fav list, if so 
+                    let favedJoke = false;
+                    this.favorites.forEach( fav => {
+                        if( fav.id === joke.id ){
+                            //console.log( joke.id );
+                            favedJoke = true;
+                        }
+                    });
+
                     if( this.jokes.length <= 9 ){
                         this.jokes.push({
                             id : joke.id,
                             joke : joke.joke,
                             categories : joke.categories,
-                            faved : false
+                            faved : favedJoke
                         });
                     }
                 });
             });
+        },
+        checkFavlist: function(id){
+            
         },
         startTimer: function(sec){
             this.timerActivated = !this.timerActivated;
@@ -75,15 +82,34 @@ const chuckNorris = new Vue({
             this.favorites = [];
             this.saveList(this.favorites,'chucksFavs');
         },
-        addRandomToFav: function(qty){
+        addRandomToFav: function(){
             if( this.favorites.length <= 9 && this.timerActivated ){
-                console.log('get 1 joke');
-                this.getRandomJokes(qty)
+                //console.log('get 1 joke');
+                
+                //Get 3 random jokes
+                this.getRandomJokes(3)
                 .then(data => {
-                    data[0]['faved'] = false;
-                    this.favorites.push(data[0]);
+                    //create array of id's
+                    const allFavIds = this.favorites.map(x => x.id );
+                    //check if joke already exists in fav list 
+                    //console.log(data[0].id);
+                    if( !allFavIds.includes(data[0].id) ){
+                        data[0]['faved'] = true;
+                        this.favorites.push(data[0]);
+                        console.log('Joke 1 ');   
+                    }else if( !allFavIds.includes(data[1].id) ){
+                        data[1]['faved'] = true;
+                        this.favorites.push(data[1]);
+                        console.log('Joke 2 ');   
+                    }else if( !allFavIds.includes(data[2].id) ){
+                        data[2]['faved'] = true;
+                        this.favorites.push(data[2]);
+                        console.log('Joke 3 ');
+                    }
+                    
                     this.saveList(this.favorites,'chucksFavs');
                 });
+
             }else{
                 console.log('reset timer');
                 this.timerActivated = false;
@@ -101,11 +127,15 @@ const chuckNorris = new Vue({
             }
         },
         removeFav: function(joke){
-            //activate fav btn if joke exists in jokelist
-            if( this.jokes.includes(joke) ){
-                const jokePos = this.jokes.indexOf(joke);
-                this.jokes[jokePos].faved = false;
-            }
+            //activate fav btn if joke exists in jokelist based on id
+            this.jokes.forEach( jokeItem => {
+                if( joke.id === jokeItem.id ){
+                    const jokePos = this.jokes.indexOf(jokeItem);
+                    jokeItem.faved = false;
+                    this.jokes[jokePos].faved = false;
+                }
+            });
+
             //remove fav
             const favPos = this.favorites.indexOf(joke);
             this.favorites.splice(favPos, 1);
