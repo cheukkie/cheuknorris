@@ -21,11 +21,11 @@
         <button id="mobToggleList" v-on:click='mobShowFav = !mobShowFav'>
             <span v-if="mobShowFav">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.508 13.941c-1.513 1.195-3.174 1.931-5.507 1.931-2.335 0-3.996-.736-5.509-1.931l-.492.493c1.127 1.72 3.2 3.566 6.001 3.566 2.8 0 4.872-1.846 5.999-3.566l-.492-.493zm.492-3.939l-.755.506s-.503-.948-1.746-.948c-1.207 0-1.745.948-1.745.948l-.754-.506c.281-.748 1.205-2.002 2.499-2.002 1.295 0 2.218 1.254 2.501 2.002zm-7 0l-.755.506s-.503-.948-1.746-.948c-1.207 0-1.745.948-1.745.948l-.754-.506c.281-.748 1.205-2.002 2.499-2.002 1.295 0 2.218 1.254 2.501 2.002z"/></svg>
-                Show jokes
+                <span>Show jokes</span>
             </span>
             <span v-else>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.435c-1.989-5.399-12-4.597-12 3.568 0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-8.118-10-8.999-12-3.568z"/></svg>
-                Show favorites
+                <span>Show favorites</span>
             </span>
         </button>
         <main v-bind:class="{ mobShowFav : mobShowFav }">
@@ -36,6 +36,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5 20l-1.359-2.038c-1.061.653-2.305 1.038-3.641 1.038-3.859 0-7-3.14-7-7h2c0 2.757 2.243 5 5 5 .927 0 1.786-.264 2.527-.708l-1.527-2.292h5.719l-1.719 6zm0-8c0-2.757-2.243-5-5-5-.927 0-1.786.264-2.527.708l1.527 2.292h-5.719l1.719-6 1.359 2.038c1.061-.653 2.305-1.038 3.641-1.038 3.859 0 7 3.14 7 7h-2z"/></svg>
                     </button>
                 </div>
+                <p class="helperText" v-if="jokes.length === 0">Press the top right button to fetch jokes</p>
+                
                 <ul id="random-jokes" v-if="jokes.length > 0">
                     <li v-for="joke in jokes">
                         <button v-on:click="addFav(joke)" v-bind:class="{ isFaved : joke.faved }">
@@ -81,6 +83,7 @@
                         </button>
                     </div>
                 </div>
+                <p class="helperText" v-if="favorites.length === 0">Add jokes via the joke list or use the top right button</p>
                 <ul v-if="favorites.length > 0">
                     <li v-for="favorite in favorites">
                         <button v-on:click="removeFav(favorite)" title="Delete this joke from the favorite list">
