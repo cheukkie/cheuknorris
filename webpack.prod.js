@@ -33,6 +33,14 @@ module.exports = {
                         "sass-loader" // compiles Sass to CSS, using Node Sass by default
                     ]
             },
+            {
+                test: /\.css$/,
+                use: [
+                        MiniCssExtractPlugin.loader, // extract css into files
+                        "css-loader", // translates CSS into CommonJS
+                        "sass-loader" // compiles Sass to CSS, using Node Sass by default
+                    ]
+            },
 
         ]
     }

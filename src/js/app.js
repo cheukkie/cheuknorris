@@ -118,24 +118,24 @@ const chuckNorris = new Vue({
                     if( !allFavIds.includes(data[0].id) ){
                         data[0]['faved'] = true;
                         this.favorites.push(data[0]);
-                        console.log('Joke 1 ');   
+                        //console.log('Joke 1 ');   
                     }else if( !allFavIds.includes(data[1].id) ){
                         data[1]['faved'] = true;
                         this.favorites.push(data[1]);
-                        console.log('Joke 2 ');   
+                        //console.log('Joke 2 ');   
                     }else if( !allFavIds.includes(data[2].id) ){
                         data[2]['faved'] = true;
                         this.favorites.push(data[2]);
-                        console.log('Joke 3 ');
+                        //console.log('Joke 3 ');
                     }else{
-                        console.log('No joke added');
+                        //console.log('No joke added');
                     }
                     
                     this.saveList(this.favorites,'chucksFavs');
                 });
 
             }else{
-                console.log('reset timer');
+                //console.log('reset timer');
                 this.stopTimer();
             }
         },
