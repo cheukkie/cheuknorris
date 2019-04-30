@@ -6,7 +6,6 @@ import '../scss/main.scss';
 TO DO:
 
 - PROMPTING ON REMOVING FAV JOKE
-- COUNTDOWN OF 5 SEONDS AFTER ACTIVATING RANDOM BTN
 
 
 CSS STYLING + ANIMATION:
@@ -21,8 +20,9 @@ const chuckNorris = new Vue({
         favorites: [],
         timer: '',
         timerActivated : false,
+        timerInterval : 5,
         timerIndication : 0,
-        timerInterval : 5
+        mobShowFav: false
     },
     filters:{
         // cleanString : function(string){
@@ -66,20 +66,42 @@ const chuckNorris = new Vue({
                 });
             });
         },
-        checkFavlist: function(id){
-            
-        },
-        startTimer: function(sec){
+        startTimer: function(seconds){
+            if(seconds){
+                this.timerInterval = seconds;
+            }
+            //toggle boolean
             this.timerActivated = !this.timerActivated;
-            this.addRandomToFav(1);
-            this.timer = setInterval( () => {
-                this.addRandomToFav(1);
-            }, sec * 1000);
+            if(!this.timerActivated){
+                clearTimeout(this.timer);
+            }else{
+                //this.addRandomToFav(1);
+                this.timerIndication = this.timerInterval + 1;
+                this.countDown();
+            }            
+            
             //strange, its not possible to do this?:
             // this.timer = setInterval( this.addRandomToFav(), 5000); ??            
         },
+        stopTimer: function(){
+            this.timerActivated = false;
+            clearTimeout(this.timer);
+        },
+        countDown: function(){
+            if(this.timerIndication-- == 0){
+                //when timer reach 1, then do following
+                this.addRandomToFav(1);
+                this.timerIndication = this.timerInterval;   
+            }
+            this.timer = setTimeout( () => {
+                this.countDown();
+            }, 1000);
+        },
         clearFavs: function(){
             this.favorites = [];
+            this.jokes.forEach(joke=>{
+                joke.faved = false;
+            });
             this.saveList(this.favorites,'chucksFavs');
         },
         addRandomToFav: function(){
@@ -105,6 +127,8 @@ const chuckNorris = new Vue({
                         data[2]['faved'] = true;
                         this.favorites.push(data[2]);
                         console.log('Joke 3 ');
+                    }else{
+                        console.log('No joke added');
                     }
                     
                     this.saveList(this.favorites,'chucksFavs');
@@ -112,18 +136,22 @@ const chuckNorris = new Vue({
 
             }else{
                 console.log('reset timer');
-                this.timerActivated = false;
-                clearInterval(this.timer);
+                this.stopTimer();
             }
         },
         addFav: function(joke) {
             if( this.favorites.length <= 9 ){
-                joke.faved = true;
-                this.favorites.push(joke);
-                
-                this.saveList(this.favorites,'chucksFavs');
+                joke.faved = !joke.faved;
+                // joke.faved = true;
+                if( joke.faved ){
+                    this.favorites.push(joke);
+                    this.saveList(this.favorites,'chucksFavs');
+                }else{
+                    this.removeFav(joke);
+                }
+
             }else{
-                alert('Max 10 jokes');
+                alert('You have reached the maximum of 10 favorite jokes.');
             }
         },
         removeFav: function(joke){
@@ -135,7 +163,9 @@ const chuckNorris = new Vue({
                     this.jokes[jokePos].faved = false;
                 }
             });
-
+            if(this.jokes.length === 10){
+                this.stopTimer();
+            }
             //remove fav
             const favPos = this.favorites.indexOf(joke);
             this.favorites.splice(favPos, 1);
@@ -154,7 +184,7 @@ const chuckNorris = new Vue({
         }
     },
     beforeDestroy() {
-        clearInterval(this.timer);
+        clearTimeout(this.timer);
     }
 });
 
