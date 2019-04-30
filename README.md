@@ -10,10 +10,10 @@ After Git pulling the project you'll need to install the necessary npm packages 
 npm install
 ```
 
-To run the web app execute the following in the terminal:
+To run the web app on your localhost execute the following in the terminal:
 
 ```
 npm run start
 ```
 
-
+Or open index.html to see the web app.
