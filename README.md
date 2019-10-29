@@ -1,6 +1,6 @@
 # The CheukNorris app
 
-A simple Vue.js project to fetch Chuck Norris Jokes
+A simple Vue.js project to fetch Chuck Norris Jokes: https://cheuk.online/lab/cheuknorris/
 
 ## Getting Started
 
