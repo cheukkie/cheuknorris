@@ -40,7 +40,7 @@ const chuckNorris = new Vue({
     },
     methods: {
         getRandomJokes: async function(qty) {
-            const response = await fetch('http://api.icndb.com/jokes/random/'+qty);
+            const response = await fetch('https://api.icndb.com/jokes/random/'+qty);
             const data = await response.json();            
             return data.value;
         },
